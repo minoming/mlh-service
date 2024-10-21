@@ -22,11 +22,11 @@ model infotable {
 
 model Scheduler {
   id                    Int      @id @default(autoincrement())
-  name                  String
+  name                  String  @unique
   description           String
   status                String
-  lastExecutionTime     DateTime  @map("lastexecutiontime")
-  createdAt             DateTime @default(now()) @map("createdat")
+  cron_expression       String
+  created_at            DateTime @default(now())
 
   @@map("scheduler")
 }
