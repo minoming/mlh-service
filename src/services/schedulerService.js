@@ -43,7 +43,8 @@ const schedulerService = {
           name: name,
           description: description,
           status: status,
-          cron_expression: cronExpression
+          cronExpression: cronExpression,
+          lastExecutionTime: null
         }
       })
       return createdScheduler

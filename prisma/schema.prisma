@@ -25,7 +25,8 @@ model Scheduler {
   name                  String
   description           String
   status                String
-  lastExecutionTime     DateTime  @map("lastexecutiontime")
+  cronExpression        String  @map("cron_expression")
+  lastExecutionTime     DateTime?  @map("lastexecutiontime")
   createdAt             DateTime @default(now()) @map("createdat")
 
   @@map("scheduler")
