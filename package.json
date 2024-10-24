@@ -17,6 +17,6 @@
 		"lighthouse": "^11.4.0",
 		"node-cron": "^3.0.3",
 		"node-json-db": "^2.3.0",
-		"puppeteer": "^23.6.0"
+		"puppeteer": "^22.7.1"
 	}
 }
