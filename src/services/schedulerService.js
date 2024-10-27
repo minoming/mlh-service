@@ -2,13 +2,14 @@ import {PrismaClient} from '@prisma/client'
 import {createTask, getTasks, startTask, stopTask} from '../scheduler/cron.js'
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error']
+  // log: ['query', 'info', 'warn', 'error']
 })
 
 const schedulerService = {
   getSchedulers: async (req) => {
     const {limit} = req
 
+    console.log(limit)
     try {
       const foundSchedulers = await prisma.Scheduler.findMany({
         take: Number(limit)
@@ -86,28 +87,32 @@ const schedulerService = {
     }
   },
 
-  startScheduler: async (req) => {
-    const {id} = req
+  patchScheduler: async (req) => {
+    const {id} = req.params
+    const {status} = req.body
     try {
       const scheduler = await prisma.Scheduler.findUnique({
         where: {
           id: Number(id)
         }
       })
-      return startTask(scheduler.name)
-    } catch (error) {
-      throw error
-    }
-  },
-  stopScheduler: async (req) => {
-    const {id} = req
-    try {
-      const scheduler = await prisma.Scheduler.findUnique({
+
+      if (!scheduler) {
+        return
+      }
+
+      status === 'running'
+        ? startTask(scheduler.name)
+        : stopTask(scheduler.name)
+
+      return await prisma.Scheduler.update({
         where: {
           id: Number(id)
+        },
+        data: {
+          status: status
         }
       })
-      return stopTask(scheduler.name)
     } catch (error) {
       throw error
     }

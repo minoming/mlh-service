@@ -17,8 +17,7 @@ schedulerRouter.post('/', schedulerController.postScheduler)
 
 // /* patch */
 // schedulerRouter.patch('/:id', schedulerController.)
-schedulerRouter.patch('/start/:id', schedulerController.startScheduler)
-schedulerRouter.patch('/stop/:id', schedulerController.stopScheduler)
+schedulerRouter.patch('/:id', schedulerController.patchScheduler)
 
 // /* put */
 schedulerRouter.put('/:id', schedulerController.putScheduler)

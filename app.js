@@ -27,11 +27,11 @@ const initializeTasks = async () => {
 
     scheduler.forEach((task) => {
       try {
-        console.log('call create Task' + task.name)
         createTask({
           name: task.name,
           desc: task.description,
-          cronExpression: task.cron_expression
+          status: task.status,
+          cronExpression: task.cronExpression
         })
       } catch (error) {
         console.error(`Error scheduling task ${task.name}: ${error.message}`)

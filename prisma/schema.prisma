@@ -34,10 +34,10 @@ model Scheduler {
 
 model SchedulerLog {
   id        Int      @id @default(autoincrement())
-  schedulerName   String
+  schedulerName   String @map("scheduler_name")
   message         String
   status          String
-  createdAt       DateTime @default(now()) @map("createdat")
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("schedulerlog")
 }

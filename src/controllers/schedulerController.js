@@ -34,7 +34,7 @@ const schedulerController = {
         this.name = name
         this.description = description
         this.cronExpression = cronExpression
-        this.status = 'stop'
+        this.status = 'stopped'
       }
     }
 
@@ -78,23 +78,11 @@ const schedulerController = {
     }
   },
 
-  startScheduler: async (req, res, next) => {
+  patchScheduler: async (req, res, next) => {
     try {
       res.status(200).send({
         message: 'Success',
-        content: await schedulerService.startScheduler(req.params)
-      })
-    } catch (err) {
-      res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
-    }
-  },
-
-  stopScheduler: async (req, res, next) => {
-    try {
-      res.status(200).send({
-        message: 'Success',
-        content: await schedulerService.stopScheduler(req.params)
+        content: await schedulerService.patchScheduler(req)
       })
     } catch (err) {
       res.status(400).json({message: err.message})
