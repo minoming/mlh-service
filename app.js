@@ -1,15 +1,17 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import homeRouter from './src/routes/homeRoute.js'
-import mlhRouter from './src/routes/mlhRoute.js'
-import schedulersRouter from './src/routes/schedulerRouter.js'
 import {PrismaClient} from '@prisma/client'
 import {createTask} from './src/scheduler/cron.js'
+import analyticsRoute from './src/routes/analyticsRoute.js'
+import schedulersRoute from './src/routes/schedulerRoute.js'
+import schedulerLogRoute from './src/routes/schedulerLogRoute.js'
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error']
+  // log: ['query', 'info', 'warn', 'error']
+  log: ['error']
 })
+
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
@@ -17,9 +19,10 @@ app.use(bodyParser.json())
 app.get('/', function (req, res) {
   res.send('Hello, This is Miracom LightHouse')
 })
-app.use('/home', homeRouter)
-app.use('/mlh', mlhRouter)
-app.use('/schedulers', schedulersRouter)
+
+app.use('/analytics', analyticsRoute)
+app.use('/schedulers', schedulersRoute)
+app.use('/schedulerlogs', schedulerLogRoute)
 
 const initializeTasks = async () => {
   try {
@@ -43,7 +46,7 @@ const initializeTasks = async () => {
 }
 
 const startApp = async () => {
-  await initializeTasks()
+  // await initializeTasks()
 
   app.listen(18177, () => {
     console.log('18177 port is open.')

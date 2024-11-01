@@ -2,51 +2,50 @@ import {PrismaClient} from '@prisma/client'
 
 const prisma = new PrismaClient({
   // log: ['query', 'info', 'warn', 'error']
+  log: ['error']
 })
 
 const schedulerLogService = {
-  getSchedulerLogs: async (schedulerLog) => {
-    const {
-      name = '',
-      status = '',
-      startDate = '',
-      endDate = ''
-    } = schedulerLog || {}
+  getSchedulerLogs: async (req) => {
+    const { limit = 100, schedulerName, message, status, startDate, endDate } = req
 
-    const foundSchedulerLogs = await prisma.SchedulerLog.findMany({
-      where: {
-        ...(name ? {schedulerName: name} : {}),
-        ...(status ? {status: status} : {}),
-        ...(start || end
-          ? {
-              createdAt: {
-                ...(start ? {gte: new Date(startDate)} : {}),
-                ...(end ? {lte: new Date(endDate)} : {})
-              }
+    try {
+      const foundSchedulerLogs = await prisma.SchedulerLog.findMany({
+        take: Number(limit),
+        where: {
+          ...(schedulerName && { schedulerName: { contains: schedulerName, mode: 'insensitive' } }),
+          ...(message && { message: { contains: message, mode: 'insensitive' } }),
+          ...(status && { status }),
+          ...(startDate && endDate && {
+            createdAt: {
+              gte: new Date(startDate), // 크거나 같다
+              lte: new Date(endDate)    // 작거나 같다
             }
-          : {})
-      },
-      take: Number(limit),
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
+          })
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      })
 
-    return foundSchedulerLogs
+      return foundSchedulerLogs
+    } catch (err) {
+      throw err
+    }
   },
 
-  postSchedulerLog: async (schedulerLog) => {
-    const {schedulerName = '', status = '', message = ''} = schedulerLog || {}
-
-    const createdSchedulerLog = await prisma.SchedulerLog.create({
-      data: {
-        schedulerName: schedulerName,
-        message: message,
-        status: status
-      }
-    })
-
-    return createdSchedulerLog
-  }
+  getSchedulerLog: async (req) => {
+    const { id } = req
+    try {
+      const foundSchedulerLog = await prisma.SchedulerLog.findUnique({
+        where: {
+          id: Number(id)
+        }
+      })
+      return foundSchedulerLog
+    } catch (err) {
+      throw err
+    }
+  },
 }
 export default schedulerLogService

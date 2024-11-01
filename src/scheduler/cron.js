@@ -30,7 +30,7 @@ const createTask = (cronInfo) => {
       const taskEntry = taskMap.get(name)
 
       // 점검 실행
-      await cronTask()
+      await cronTask(taskEntry)
 
       scheudlerLogService.postSchedulerLog({
         schedulerName: taskEntry.name,
@@ -50,8 +50,9 @@ const createTask = (cronInfo) => {
       status: status,
       message: name + ' scheduler is' + status + '!'
     })
-  } catch (error) {
-    // throw new Error(error.message)
+  } catch (err) {
+    console.log("Error : task create is failed -> " + err.message)
+    throw new Error(err.message)
   }
 }
 
@@ -71,6 +72,7 @@ const startTask = (name) => {
     })
   } else {
     console.log('Task is not found and task start is failed')
+    throw new Error('Task is not found and task start is failed')
   }
 }
 

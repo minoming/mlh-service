@@ -12,7 +12,7 @@ const schedulerController = {
       })
     } catch (err) {
       res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
+      console.error(`Error while getting schedulers`, err.message)
     }
   },
 
@@ -24,7 +24,7 @@ const schedulerController = {
       })
     } catch (err) {
       res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
+      console.error(`Error while getting scheduler`, err.message)
     }
   },
 
@@ -41,13 +41,13 @@ const schedulerController = {
     try {
       res.status(200).send({
         message: 'Success',
-        content: await schedulerService.postScheudler(
+        content: await schedulerService.postScheduler(
           new SchedulerDto(req.body)
         )
       })
     } catch (err) {
       res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
+      console.error(`Error while creating scheduler`, err.message)
     }
   },
 
@@ -62,19 +62,7 @@ const schedulerController = {
       })
     } catch (err) {
       res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
-    }
-  },
-
-  deleteScheduler: async (req, res, next) => {
-    try {
-      res.status(200).send({
-        message: 'Success',
-        content: await schedulerService.deleteScheudler(req.params)
-      })
-    } catch (err) {
-      res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
+      console.error(`Error while modifying scheduler`, err.message)
     }
   },
 
@@ -82,11 +70,26 @@ const schedulerController = {
     try {
       res.status(200).send({
         message: 'Success',
-        content: await schedulerService.patchScheduler(req)
+        content: await schedulerService.patchScheduler({
+          ...req.body,
+          ...req.params
+        })
       })
     } catch (err) {
       res.status(400).json({message: err.message})
-      console.error(`Error while creating programming language`, err.message)
+      console.error(`Error while modifying scheduler`, err.message)
+    }
+  },
+
+  deleteScheduler: async (req, res, next) => {
+    try {
+      res.status(200).send({
+        message: 'Success',
+        content: await schedulerService.deleteScheduler(req.params)
+      })
+    } catch (err) {
+      res.status(400).json({message: err.message})
+      console.error(`Error while deleting scheduler`, err.message)
     }
   }
 }

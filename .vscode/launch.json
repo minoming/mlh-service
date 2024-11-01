@@ -9,8 +9,8 @@
         "program": "${workspaceFolder}/app.js", // 서버 시작 파일 경로
         "env": { "NODE_ENV": "development" }, // 환경 변수 설정 (선택 사항)
         "restart": true, // 코드 변경 시 자동으로 디버깅 재시작
-        "console": "integratedTerminal" // 디버그 출력 터미널 설정
+        "console": "integratedTerminal", // 디버그 출력 터미널 설정
+        "runtimeExecutable": "/Users/miracom/.nvm/versions/node/v20.10.0/bin/node"
       }
     ]
   }
-  

@@ -20,6 +20,25 @@ model infotable {
   createdat DateTime @default(now())
 }
 
+model PerformanceMetricsScore {
+  id                    Int      @id @default(autoincrement())
+  schedulerName         String   @map("scheduler_name")
+  performanceScore      Decimal  @map("performance_score")
+  fcpScore              Decimal  @map("fcp_score")
+  siScore               Decimal  @map("si_score")
+  lcpScore              Decimal  @map("lcp_score")
+  tbtScore              Decimal  @map("tbt_score")
+  clsScore              Decimal  @map("cls_score")
+  fcpValue              Decimal  @map("fcp_value")
+  siValue               Decimal  @map("si_value")
+  lcpValue              Decimal  @map("lcp_value")
+  tbtValue              Decimal  @map("tbt_value")
+  clsValue              Decimal  @map("cls_value")
+  createdAt             DateTime @default(now()) @map("createdat")
+
+  @@map("performancemetricsscore")
+}
+
 model Scheduler {
   id                    Int      @id @default(autoincrement())
   name                  String
