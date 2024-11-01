@@ -47,5 +47,22 @@ const schedulerLogService = {
       throw err
     }
   },
+
+  postSchedulerLog: async (req) => {
+    const {schedulerName, status, message} = req
+
+    try {
+      const createdSchedulerLog = await prisma.SchedulerLog.create({
+        data: {
+          schedulerName: schedulerName,
+          message: message,
+          status: status
+        }
+      })
+      return createdSchedulerLog
+    } catch (err) {
+      throw err
+    }
+  }
 }
 export default schedulerLogService
