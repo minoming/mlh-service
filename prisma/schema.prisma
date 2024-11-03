@@ -40,13 +40,14 @@ model PerformanceMetricsScore {
 }
 
 model Scheduler {
-  id                    Int      @id @default(autoincrement())
+  id                    Int         @id @default(autoincrement())
   name                  String
   description           String
   status                String
-  cronExpression        String  @map("cron_expression")
-  lastExecutionTime     DateTime?  @map("lastexecutiontime")
-  createdAt             DateTime @default(now()) @map("createdat")
+  url                   String
+  cronExpression        String      @map("cron_expression")
+  lastExecutionTime     DateTime?   @map("lastexecutiontime")
+  createdAt             DateTime    @default(now()) @map("createdat")
 
   @@map("scheduler")
 }

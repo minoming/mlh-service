@@ -3,6 +3,9 @@ import schedulerService from '../services/schedulerService.js'
 const schedulerController = {
   getSchedulers: async (req, res, next) => {
     try {
+      if (req.query.status === 'all') {
+        req.query.status = ''
+      }
       const schedulers = await schedulerService.getSchedulers(req.query)
 
       res.status(200).send({
