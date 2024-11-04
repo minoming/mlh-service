@@ -33,11 +33,12 @@ const schedulerController = {
 
   postScheduler: async (req, res, next) => {
     class SchedulerDto {
-      constructor({name, description, cronExpression}) {
+      constructor({name, description, url, cronExpression}) {
         this.name = name
         this.description = description
         this.cronExpression = cronExpression
         this.status = 'stopped'
+        this.url = url
       }
     }
 

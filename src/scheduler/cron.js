@@ -23,7 +23,7 @@ const getTasks = () => {
 }
 
 const createTask = (cronInfo) => {
-  const {name, desc, status, cronExpression} = cronInfo || {}
+  const {name, desc, url, status, cronExpression} = cronInfo || {}
 
   try {
     const task = cron.schedule(cronExpression, async () => {
@@ -35,11 +35,11 @@ const createTask = (cronInfo) => {
       scheudlerLogService.postSchedulerLog({
         schedulerName: taskEntry.name,
         status: 'executed',
-        message: taskEntry.name + ' scheduler is executed!'
+        message: taskEntry.name + ' scheduler is executed! -> ' + taskEntry.url
       })
     })
 
-    taskMap.set(name, {name, cronExpression, task})
+    taskMap.set(name, {name, url, desc, cronExpression, task})
 
     if (status === 'stopped') {
       task.stop()
@@ -48,7 +48,7 @@ const createTask = (cronInfo) => {
     scheudlerLogService.postSchedulerLog({
       schedulerName: name,
       status: status,
-      message: name + ' scheduler is' + status + '!'
+      message: name + ' scheduler is' + status + '! -> ' + url 
     })
   } catch (err) {
     console.log("Error : task create is failed -> " + err.message)

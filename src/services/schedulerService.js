@@ -26,7 +26,7 @@ const schedulerService = {
           ...(description && {
             description: {contains: description, mode: 'insensitive'}
           }),
-          ...(rul && {rul: {contains: url, mode: 'insensitive'}}),
+          ...(url && {url: {contains: url, mode: 'insensitive'}}),
           ...(status && {status}),
           ...(startDate &&
             endDate && {
@@ -62,7 +62,7 @@ const schedulerService = {
   },
 
   postScheduler: async (req) => {
-    const {name, description, status = 'stopped', cronExpression} = req
+    const {name, description, status = 'stopped', url, cronExpression} = req
 
     try {
       // 필수 값 확인
@@ -70,12 +70,13 @@ const schedulerService = {
         throw new Error('Required value not found')
       }
 
-      createTask({name, desc: description, status: status, cronExpression})
+      createTask({name, desc: description, url, status: status, cronExpression})
       const createdScheduler = await prisma.Scheduler.create({
         data: {
           name: name,
           description: description,
           status: status,
+          url: url,
           cronExpression: cronExpression,
           lastExecutionTime: null
         }

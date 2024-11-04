@@ -33,6 +33,7 @@ const initializeTasks = async () => {
         createTask({
           name: task.name,
           desc: task.description,
+          url: task.url,
           status: task.status,
           cronExpression: task.cronExpression
         })
@@ -46,7 +47,7 @@ const initializeTasks = async () => {
 }
 
 const startApp = async () => {
-  // await initializeTasks()
+  await initializeTasks()
 
   app.listen(18177, () => {
     console.log('18177 port is open.')

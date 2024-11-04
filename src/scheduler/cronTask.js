@@ -70,6 +70,12 @@ export const cronTask = async (taskEntry) => {
     ...performanceMetricsScoreResult,
     ...performanceMetricsValueResult
   })
+
+  const fetchedScheduler = await fetchSchedulerLastExecutionTime({
+    schedulerName: taskEntry.name,
+    url: taskEntry.url,
+    lastExecutionTime: new Date()
+  })
 }
 
 const fetchPerformanceMetricsScore = async (metricsScoreInfo) => {
@@ -80,4 +86,31 @@ const fetchPerformanceMetricsScore = async (metricsScoreInfo) => {
   })
 
   return fetchMetricsScores
+}
+
+const fetchSchedulerLastExecutionTime = async (scheduleInfo) => {
+
+  const foundScheduler = await prisma.scheduler.findFirst({
+    where: {
+      name: scheduleInfo.schedulerName,
+      url: scheduleInfo.url,
+      status: 'running'
+    }
+  })
+
+  if(!foundScheduler) {
+    return
+  }
+
+
+  const fetchScheduler = await prisma.scheduler.update({
+    data: {
+      lastExecutionTime: scheduleInfo.lastExecutionTime
+    },
+    where: {
+       id: Number(foundScheduler.id)
+    },
+  })
+
+  return fetchScheduler
 }

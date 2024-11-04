@@ -3,8 +3,11 @@ import schedulerLogService from "../services/scheudlerLogService.js"
 const schedulerLogController = {
   getSchedulerLogs: async (req, res, next) => {
     try {
+      if (req.query.status === 'all') {
+        req.query.status = ''
+      }
       const schedulers = await schedulerLogService.getSchedulerLogs(req.query)
-
+      
       res.status(200).send({
         message: 'Success',
         count: schedulers.length,
